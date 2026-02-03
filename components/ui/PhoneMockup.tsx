@@ -143,13 +143,23 @@ const PhoneMockup: React.FC = () => {
       const outputNode = outputAudioContextRef.current.createGain();
       outputNode.connect(outputAudioContextRef.current.destination);
 
+      // Initialize AI Client
+      // Ensure apiKey is defined. If process is not defined, this might throw, but standard envs handle it.
+      const apiKey = process.env.API_KEY || (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
+
+      if (!apiKey) {
+        alert("Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.");
+        setIsConnecting(false);
+        return;
+      }
+
       // Get Microphone
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
       // Initialize AI Client
       // Ensure apiKey is defined. If process is not defined, this might throw, but standard envs handle it.
-      const apiKey = process.env.API_KEY;
       const ai = new GoogleGenAI({ apiKey: apiKey });
 
       const config = {
