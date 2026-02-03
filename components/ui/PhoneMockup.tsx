@@ -125,7 +125,7 @@ const PhoneMockup: React.FC = () => {
     try {
       setError(null);
       setIsConnecting(true);
-      setStatusText("Initializing...");
+      setStatusText("Starting v2...");
 
       // Check API Key
       // Access window safely
@@ -149,11 +149,12 @@ const PhoneMockup: React.FC = () => {
       outputNode.connect(outputAudioContextRef.current.destination);
 
       // Initialize AI Client
-      // Ensure apiKey is defined. If process is not defined, this might throw, but standard envs handle it.
-      const apiKey = process.env.API_KEY || (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
+      // Use import.meta.env for Vite or fallback to hardcoded key
+      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || "AIzaSyCLnV9fYwJVgeddHESUphJWxDY5kTc3ZxQ";
 
       if (!apiKey) {
         const msg = "Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.";
+        setStatusText("Error: Custom API Key Missing");
         alert(msg);
         setError(msg);
         setIsConnecting(false);
@@ -161,7 +162,7 @@ const PhoneMockup: React.FC = () => {
       }
 
       // Get Microphone
-      setStatusText("Requesting Mic...");
+      setStatusText("Requesting Mic (v2)...");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
