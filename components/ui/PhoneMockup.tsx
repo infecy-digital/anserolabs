@@ -60,7 +60,7 @@ const PhoneMockup: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  
+
   // Audio & AI Refs
   const inputAudioContextRef = useRef<AudioContext | null>(null);
   const outputAudioContextRef = useRef<AudioContext | null>(null);
@@ -96,7 +96,7 @@ const PhoneMockup: React.FC = () => {
 
     // Close AI session
     if (sessionRef.current) {
-      sessionRef.current = null; 
+      sessionRef.current = null;
     }
 
     // Close Audio Contexts
@@ -111,7 +111,7 @@ const PhoneMockup: React.FC = () => {
 
     // Stop all playing sources
     sourcesRef.current.forEach(source => {
-      try { source.stop(); } catch(e) {}
+      try { source.stop(); } catch (e) { }
     });
     sourcesRef.current.clear();
 
@@ -129,8 +129,8 @@ const PhoneMockup: React.FC = () => {
       if (win.aistudio && win.aistudio.hasSelectedApiKey) {
         const hasKey = await win.aistudio.hasSelectedApiKey();
         if (!hasKey) {
-            await win.aistudio.openSelectKey();
-            // Race condition mitigation: assume success if they returned
+          await win.aistudio.openSelectKey();
+          // Race condition mitigation: assume success if they returned
         }
       }
 
@@ -138,7 +138,7 @@ const PhoneMockup: React.FC = () => {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       inputAudioContextRef.current = new AudioContextClass({ sampleRate: 16000 });
       outputAudioContextRef.current = new AudioContextClass({ sampleRate: 24000 });
-      
+
       const inputNode = inputAudioContextRef.current.createGain();
       const outputNode = outputAudioContextRef.current.createGain();
       outputNode.connect(outputAudioContextRef.current.destination);
@@ -149,17 +149,17 @@ const PhoneMockup: React.FC = () => {
 
       // Initialize AI Client
       // Ensure apiKey is defined. If process is not defined, this might throw, but standard envs handle it.
-      const apiKey = process.env.API_KEY; 
+      const apiKey = process.env.API_KEY;
       const ai = new GoogleGenAI({ apiKey: apiKey });
-      
+
       const config = {
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         config: {
           responseModalities: [Modality.AUDIO],
           speechConfig: {
-            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } }, 
+            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
           },
-          systemInstruction: 'You are Ansa, a helpful, professional AI assistant for AnseroLabs. You are concise, polite, and efficient. When you start, greet the user by introducing yourself as "Ansa from AnseroLabs". Your job is to demonstrate your capabilities as a voice agent.',
+          systemInstruction: 'You are Ansa, a helpful, professional AI assistant for Ansero Labs. You are concise, polite, and efficient. When you start, greet the user by introducing yourself as "Ansa from Ansero Labs". Your job is to demonstrate your capabilities as a voice agent.',
         },
       };
 
@@ -176,14 +176,14 @@ const PhoneMockup: React.FC = () => {
 
             // Setup Input Processing
             if (!inputAudioContextRef.current || !streamRef.current) return;
-            
+
             const source = inputAudioContextRef.current.createMediaStreamSource(streamRef.current);
             const scriptProcessor = inputAudioContextRef.current.createScriptProcessor(4096, 1, 1);
-            
+
             scriptProcessor.onaudioprocess = (audioProcessingEvent) => {
               const inputData = audioProcessingEvent.inputBuffer.getChannelData(0);
               const pcmBlob = createBlob(inputData);
-              
+
               sessionPromise.then((session) => {
                 session.sendRealtimeInput({ media: pcmBlob });
               });
@@ -198,7 +198,7 @@ const PhoneMockup: React.FC = () => {
             if (base64Audio && outputAudioContextRef.current) {
               const ctx = outputAudioContextRef.current;
               nextStartTime = Math.max(nextStartTime, ctx.currentTime);
-              
+
               const audioBuffer = await decodeAudioData(
                 decode(base64Audio),
                 ctx,
@@ -209,7 +209,7 @@ const PhoneMockup: React.FC = () => {
               const source = ctx.createBufferSource();
               source.buffer = audioBuffer;
               source.connect(outputNode);
-              
+
               source.addEventListener('ended', () => {
                 sourcesRef.current.delete(source);
               });
@@ -222,7 +222,7 @@ const PhoneMockup: React.FC = () => {
             // Handle Interruption
             if (message.serverContent?.interrupted) {
               sourcesRef.current.forEach(source => {
-                try { source.stop(); } catch(e) {}
+                try { source.stop(); } catch (e) { }
               });
               sourcesRef.current.clear();
               nextStartTime = 0;
@@ -239,7 +239,7 @@ const PhoneMockup: React.FC = () => {
           }
         }
       });
-      
+
       sessionRef.current = sessionPromise;
 
     } catch (error) {
@@ -251,15 +251,15 @@ const PhoneMockup: React.FC = () => {
 
   return (
     <div className="relative mx-auto w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-4 shadow-2xl border-4 border-slate-800 ring-1 ring-white/20 select-none transform sm:hover:scale-[1.02] transition-transform duration-500 overflow-hidden">
-       {/* Glare Effect */}
-       <div className="absolute top-0 right-0 w-[200%] h-full bg-gradient-to-l from-transparent via-white/5 to-transparent skew-x-12 z-20 pointer-events-none"></div>
-       
+      {/* Glare Effect */}
+      <div className="absolute top-0 right-0 w-[200%] h-full bg-gradient-to-l from-transparent via-white/5 to-transparent skew-x-12 z-20 pointer-events-none"></div>
+
       {/* Notch */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 sm:w-32 h-6 bg-slate-900 rounded-b-xl z-30"></div>
-      
+
       {/* Screen Content */}
       <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 rounded-[2rem] sm:rounded-[2.25rem] overflow-hidden relative flex flex-col text-white">
-        
+
         {/* Background Blur Effect */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[50%] bg-primary rounded-full blur-[80px]"></div>
@@ -279,12 +279,12 @@ const PhoneMockup: React.FC = () => {
         {/* Caller Info */}
         <div className="relative z-10 flex flex-col items-center mt-8 sm:mt-12">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-gray-200 to-white flex items-center justify-center mb-6 shadow-xl ring-4 ring-white/10 overflow-hidden relative">
-             <img 
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
-              alt="Ansa AI Agent" 
+            <img
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              alt="Ansa AI Agent"
               className="w-full h-full object-cover"
-             />
-             <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full"></div>
+            />
+            <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full"></div>
           </div>
           <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-center">Ansa (AI)</h3>
           <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/5">
@@ -298,39 +298,39 @@ const PhoneMockup: React.FC = () => {
         {/* Waveform Visualization */}
         <div className="relative z-10 flex-grow flex items-center justify-center gap-1.5 h-32 px-12">
           {isConnected ? (
-             [...Array(6)].map((_, i) => (
-               <div key={i} className="waveform-bar w-2 bg-white rounded-full h-1/2" style={{
-                 animationDuration: `${0.6 + Math.random() * 0.4}s`
-               }}></div>
-             ))
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="waveform-bar w-2 bg-white rounded-full h-1/2" style={{
+                animationDuration: `${0.6 + Math.random() * 0.4}s`
+              }}></div>
+            ))
           ) : (
             <div className="flex gap-1.5 items-center opacity-30">
-               {[...Array(6)].map((_, i) => (
-               <div key={i} className="w-2 bg-white rounded-full h-2"></div>
-             ))}
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="w-2 bg-white rounded-full h-2"></div>
+              ))}
             </div>
           )}
         </div>
 
         {/* Controls */}
         <div className="relative z-10 pb-12 sm:pb-16 px-8 flex justify-center items-center">
-          
+
           {!isConnected && !isConnecting && (
-             <div className="flex flex-col items-center gap-4">
-                <button 
-                  onClick={startSession}
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10"
-                >
-                  <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current" />
-                </button>
-                <span className="text-sm font-medium text-slate-300">Tap to call</span>
-             </div>
+            <div className="flex flex-col items-center gap-4">
+              <button
+                onClick={startSession}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10"
+              >
+                <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current" />
+              </button>
+              <span className="text-sm font-medium text-slate-300">Tap to call</span>
+            </div>
           )}
 
           {isConnecting && (
             <div className="flex flex-col items-center gap-4">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-700/80 backdrop-blur flex items-center justify-center border border-white/10">
-                 <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-spin" />
+                <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-spin" />
               </div>
               <span className="text-sm font-medium text-slate-300">Connecting...</span>
             </div>
@@ -338,16 +338,16 @@ const PhoneMockup: React.FC = () => {
 
           {isConnected && (
             <div className="flex flex-col items-center gap-4">
-              <button 
+              <button
                 onClick={stopSession}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-500 hover:bg-red-400 shadow-[0_8px_20px_rgba(239,68,68,0.3)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 border border-white/10"
               >
                 <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current rotate-[135deg]" />
               </button>
-               <span className="text-sm font-medium text-slate-300">End Call</span>
+              <span className="text-sm font-medium text-slate-300">End Call</span>
             </div>
           )}
-          
+
         </div>
       </div>
     </div>

@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>&copy; {new Date().getFullYear()} AnseroLabs. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Ansero Labs. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-slate-900">Privacy Policy</a>
             <a href="#" className="hover:text-slate-900">Terms of Service</a>

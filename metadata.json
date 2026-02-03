@@ -1,6 +1,6 @@
 {
-  "name": "AnseroLabs",
-  "description": "Modern marketing website for AnseroLabs AI voice agent agency.",
+  "name": "Ansero Labs",
+  "description": "Modern marketing website for Ansero Labs AI voice agent agency.",
   "requestFramePermissions": [
     "microphone"
   ]
