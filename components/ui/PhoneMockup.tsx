@@ -125,7 +125,7 @@ const PhoneMockup: React.FC = () => {
     try {
       setError(null);
       setIsConnecting(true);
-      setStatusText("Starting v2...");
+      setStatusText("Connecting...");
 
       // Check API Key
       // Access window safely
@@ -133,7 +133,6 @@ const PhoneMockup: React.FC = () => {
       if (win.aistudio && win.aistudio.hasSelectedApiKey) {
         const hasKey = await win.aistudio.hasSelectedApiKey();
         if (!hasKey) {
-          setStatusText("Requesting API Key...");
           await win.aistudio.openSelectKey();
           // Race condition mitigation: assume success if they returned
         }
@@ -153,21 +152,17 @@ const PhoneMockup: React.FC = () => {
       const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
 
       if (!apiKey) {
-        const msg = "Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.";
-        setStatusText("Error: Custom API Key Missing");
-        alert(msg);
-        setError(msg);
+        console.error("Gemini API Key is missing.");
+        setError("Configuration Error");
         setIsConnecting(false);
         return;
       }
 
       // Get Microphone
-      setStatusText("Requesting Mic (v2)...");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
       // Initialize AI Client
-      setStatusText("Connecting to AI...");
       const ai = new GoogleGenAI({ apiKey: apiKey });
 
       const config = {
@@ -189,7 +184,6 @@ const PhoneMockup: React.FC = () => {
         callbacks: {
           onopen: () => {
             console.log("AI Session Opened");
-            setStatusText("Connected!");
             setIsConnecting(false);
             setIsConnected(true);
 
@@ -253,7 +247,7 @@ const PhoneMockup: React.FC = () => {
           },
           onerror: (err) => {
             console.error("AI Session Error", err);
-            setError(err.message || "Connection Error");
+            setError("Connection Failed");
             // Don't immediately stop session on generic errors if possible, but Network Error usually is fatal
             stopSession();
           }
@@ -264,7 +258,7 @@ const PhoneMockup: React.FC = () => {
 
     } catch (error: any) {
       console.error("Failed to start session:", error);
-      setError(error.message || "Failed to start");
+      setError("Failed to start call");
       setIsConnecting(false);
       stopSession();
     }
