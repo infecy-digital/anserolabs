@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AnseroLabs | AI Voice Agents</title>
+    <meta name="description" content="Turn missed calls into revenue on autopilot. AnseroLabs helps businesses automate call answering using human-like AI voice agents." />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://anserolabs.com/" />
+    <meta property="og:title" content="AnseroLabs | AI Voice Agents" />
+    <meta property="og:description" content="Turn missed calls into revenue on autopilot. Stop losing leads to voicemail with our human-like AI agents." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=1200&h=630&auto=format&fit=crop" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://anserolabs.com/" />
+    <meta property="twitter:title" content="AnseroLabs | AI Voice Agents" />
+    <meta property="twitter:description" content="Turn missed calls into revenue on autopilot. Stop losing leads to voicemail with our human-like AI agents." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=1200&h=630&auto=format&fit=crop" />
+
+    <!-- Google Fonts: Inter & Satoshi (using Inter as proxy for modern sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: '#FF7A18',
+              'primary-hover': '#E5660E',
+              slate: {
+                850: '#1e293b',
+              }
+            },
+            boxShadow: {
+              'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+              'glow': '0 0 20px -5px rgba(255, 122, 24, 0.3)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            },
+            backgroundImage: {
+              'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+            }
+          }
+        }
+      }
+    </script>
+    
+    <style>
+      /* Custom Waveform Animation */
+      .waveform-bar {
+        animation: wave 1.2s ease-in-out infinite;
+      }
+      .waveform-bar:nth-child(odd) { animation-direction: reverse; }
+      
+      @keyframes wave {
+        0%, 100% { height: 10%; opacity: 0.3; }
+        50% { height: 60%; opacity: 1; }
+      }
+
+      /* Scroll Reveal Animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Glassmorphism Utilities */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      
+      .glass-dark {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-gray-50 text-slate-800 antialiased selection:bg-primary/20 selection:text-primary">
+    <div id="root"></div>
+    <script>
+      // Simple scroll reveal script
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 100;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      // Trigger once on load
+      window.addEventListener("load", reveal);
+      // Fallback for React mounting
+      setTimeout(reveal, 500);
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
