@@ -60,6 +60,8 @@ const PhoneMockup: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [statusText, setStatusText] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // Audio & AI Refs
   const inputAudioContextRef = useRef<AudioContext | null>(null);
@@ -121,7 +123,9 @@ const PhoneMockup: React.FC = () => {
 
   const startSession = async () => {
     try {
+      setError(null);
       setIsConnecting(true);
+      setStatusText("Initializing...");
 
       // Check API Key
       // Access window safely
@@ -129,6 +133,7 @@ const PhoneMockup: React.FC = () => {
       if (win.aistudio && win.aistudio.hasSelectedApiKey) {
         const hasKey = await win.aistudio.hasSelectedApiKey();
         if (!hasKey) {
+          setStatusText("Requesting API Key...");
           await win.aistudio.openSelectKey();
           // Race condition mitigation: assume success if they returned
         }
@@ -148,18 +153,20 @@ const PhoneMockup: React.FC = () => {
       const apiKey = process.env.API_KEY || (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
 
       if (!apiKey) {
-        alert("Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.");
+        const msg = "Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.";
+        alert(msg);
+        setError(msg);
         setIsConnecting(false);
         return;
       }
 
       // Get Microphone
-
+      setStatusText("Requesting Mic...");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
       // Initialize AI Client
-      // Ensure apiKey is defined. If process is not defined, this might throw, but standard envs handle it.
+      setStatusText("Connecting to AI...");
       const ai = new GoogleGenAI({ apiKey: apiKey });
 
       const config = {
@@ -181,6 +188,7 @@ const PhoneMockup: React.FC = () => {
         callbacks: {
           onopen: () => {
             console.log("AI Session Opened");
+            setStatusText("Connected!");
             setIsConnecting(false);
             setIsConnected(true);
 
@@ -244,6 +252,7 @@ const PhoneMockup: React.FC = () => {
           },
           onerror: (err) => {
             console.error("AI Session Error", err);
+            setError(err.message || "Connection Error");
             // Don't immediately stop session on generic errors if possible, but Network Error usually is fatal
             stopSession();
           }
@@ -252,8 +261,9 @@ const PhoneMockup: React.FC = () => {
 
       sessionRef.current = sessionPromise;
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to start session:", error);
+      setError(error.message || "Failed to start");
       setIsConnecting(false);
       stopSession();
     }
@@ -325,7 +335,7 @@ const PhoneMockup: React.FC = () => {
         {/* Controls */}
         <div className="relative z-10 pb-12 sm:pb-16 px-8 flex justify-center items-center">
 
-          {!isConnected && !isConnecting && (
+          {!isConnected && !isConnecting && !error && (
             <div className="flex flex-col items-center gap-4">
               <button
                 onClick={startSession}
@@ -342,7 +352,20 @@ const PhoneMockup: React.FC = () => {
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-700/80 backdrop-blur flex items-center justify-center border border-white/10">
                 <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-spin" />
               </div>
-              <span className="text-sm font-medium text-slate-300">Connecting...</span>
+              <span className="text-sm font-medium text-slate-300">{statusText}</span>
+            </div>
+          )}
+
+          {error && !isConnecting && (
+            <div className="flex flex-col items-center gap-4">
+              <button
+                onClick={startSession}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-500/80 hover:bg-red-500 shadow-[0_8px_20px_rgba(239,68,68,0.3)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 border border-white/10"
+              >
+                <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current" />
+              </button>
+              <span className="text-xs font-medium text-red-300 text-center px-4">{error}</span>
+              <span className="text-[10px] text-slate-400">Tap to retry</span>
             </div>
           )}
 
