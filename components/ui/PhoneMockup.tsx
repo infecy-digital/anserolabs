@@ -149,8 +149,8 @@ const PhoneMockup: React.FC = () => {
       outputNode.connect(outputAudioContextRef.current.destination);
 
       // Initialize AI Client
-      // Use import.meta.env for Vite or fallback to hardcoded key
-      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || "AIzaSyCLnV9fYwJVgeddHESUphJWxDY5kTc3ZxQ";
+      // Use import.meta.env for Vite
+      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || (process.env as any).GEMINI_API_KEY;
 
       if (!apiKey) {
         const msg = "Gemini API Key is missing. Please add it to your .env file as GEMINI_API_KEY.";
