@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Wifi, Signal, Battery, Phone, Loader2 } from 'lucide-react';
 
-// Declare custom element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { 'agent-id': string };
-    }
-  }
-}
-
 const PhoneMockup: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const widgetRef = useRef<HTMLElement>(null);
+  const [volume, setVolume] = useState(0);
+
+  // Refs for SDK and Conversation
+  const conversationRef = useRef<any>(null);
+  const ConversationClassRef = useRef<any>(null);
 
   // Clock Effect
   useEffect(() => {
@@ -27,63 +22,84 @@ const PhoneMockup: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Load ElevenLabs Script
+  // Load ElevenLabs SDK from ESM.sh to avoid npm install issues
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
-    script.async = true;
-    script.type = "text/javascript";
-    document.body.appendChild(script);
+    const loadSDK = async () => {
+      try {
+        // Dynamic import to bypass local resolution
+        // @ts-ignore
+        const module = await import(/* @vite-ignore */ 'https://esm.sh/@elevenlabs/client');
+        ConversationClassRef.current = module.Conversation;
+        console.log("ElevenLabs SDK loaded");
+      } catch (err) {
+        console.error("Failed to load ElevenLabs SDK", err);
+      }
+    };
+    loadSDK();
 
     return () => {
-      document.body.removeChild(script);
+      if (conversationRef.current) {
+        conversationRef.current.endSession();
+      }
     };
   }, []);
 
-  // Monitor Widget State via MutationObserver
-  useEffect(() => {
-    // Wait for the widget to upgrade and shadowRoot to attach
-    const checkShadow = setInterval(() => {
-      if (widgetRef.current && widgetRef.current.shadowRoot) {
-        clearInterval(checkShadow);
+  const startConversation = async () => {
+    if (!ConversationClassRef.current) {
+      console.error("SDK not loaded yet");
+      return;
+    }
 
-        const shadow = widgetRef.current.shadowRoot;
-        const observer = new MutationObserver(() => {
-          // Primitive check: if the button says "End Call" or has active state, we are connected.
-          // Since we can't easily see exact text, we assume if the user clicked our button,
-          // and the internal state changed, we mirror it.
-          // For now, we will rely on our manual toggle mostly, but this could refine it.
-        });
+    try {
+      setIsConnecting(true);
 
-        observer.observe(shadow, { childList: true, subtree: true, attributes: true });
+      // Request microphone permission first
+      await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        return () => observer.disconnect();
-      }
-    }, 500);
-    return () => clearInterval(checkShadow);
-  }, []);
-
-  const handleCallToggle = async () => {
-    if (widgetRef.current && widgetRef.current.shadowRoot) {
-      const btn = widgetRef.current.shadowRoot.querySelector('button');
-      if (btn) {
-        btn.click();
-
-        if (!isConnected) {
-          setIsConnecting(true);
-          // Simulate connection delay
-          setTimeout(() => {
-            setIsConnecting(false);
-            setIsConnected(true);
-          }, 2000);
-        } else {
+      const conversation = await ConversationClassRef.current.startSession({
+        agentId: 'agent_9301kgm7s9v7e5z9ptmdzgqjcsn0',
+        onConnect: () => {
+          console.log("Connected to ElevenLabs");
+          setIsConnecting(false);
+          setIsConnected(true);
+        },
+        onDisconnect: () => {
+          console.log("Disconnected from ElevenLabs");
           setIsConnected(false);
-        }
-      } else {
-        console.error("ElevenLabs internal button not found");
-      }
+          setIsConnecting(false);
+          setVolume(0);
+        },
+        onError: (error: any) => {
+          console.error("ElevenLabs Error:", error);
+          setIsConnecting(false);
+          setIsConnected(false);
+        },
+        onModeChange: (mode: { mode: string }) => {
+          console.log("Mode changed:", mode);
+          // If accessing speaking/listening state becomes available
+        },
+      });
+
+      conversationRef.current = conversation;
+
+    } catch (err) {
+      console.error("Failed to start conversation:", err);
+      setIsConnecting(false);
+    }
+  };
+
+  const stopConversation = async () => {
+    if (conversationRef.current) {
+      await conversationRef.current.endSession();
+      conversationRef.current = null;
+    }
+  };
+
+  const handleCallToggle = () => {
+    if (isConnected) {
+      stopConversation();
     } else {
-      console.error("Widget not ready");
+      startConversation();
     }
   };
 
@@ -133,7 +149,7 @@ const PhoneMockup: React.FC = () => {
           </div>
         </div>
 
-        {/* Waveform Visualization */}
+        {/* Waveform Visualization - Animated when live */}
         <div className="relative z-10 flex-grow flex items-center justify-center gap-1.5 h-32 px-12">
           {isConnected ? (
             [...Array(6)].map((_, i) => (
@@ -152,13 +168,6 @@ const PhoneMockup: React.FC = () => {
 
         {/* Controls */}
         <div className="relative z-10 pb-12 sm:pb-16 px-8 flex justify-center items-center">
-
-          {/* Hidden ElevenLabs Widget */}
-          <elevenlabs-convai
-            ref={widgetRef}
-            agent-id="agent_9301kgm7s9v7e5z9ptmdzgqjcsn0"
-            style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
-          ></elevenlabs-convai>
 
           {/* Custom UI Buttons */}
           {!isConnected && !isConnecting && (
