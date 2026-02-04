@@ -1,4 +1,3 @@
-```
 import React, { useState, useEffect, useRef } from 'react';
 import { Wifi, Signal, Battery, Phone, Loader2 } from 'lucide-react';
 
@@ -47,17 +46,17 @@ const PhoneMockup: React.FC = () => {
     const checkShadow = setInterval(() => {
       if (widgetRef.current && widgetRef.current.shadowRoot) {
         clearInterval(checkShadow);
-        
+
         const shadow = widgetRef.current.shadowRoot;
         const observer = new MutationObserver(() => {
-            // Primitive check: if the button says "End Call" or has active state, we are connected.
-            // Since we can't easily see exact text, we assume if the user clicked our button,
-            // and the internal state changed, we mirror it.
-            // For now, we will rely on our manual toggle mostly, but this could refine it.
+          // Primitive check: if the button says "End Call" or has active state, we are connected.
+          // Since we can't easily see exact text, we assume if the user clicked our button,
+          // and the internal state changed, we mirror it.
+          // For now, we will rely on our manual toggle mostly, but this could refine it.
         });
 
         observer.observe(shadow, { childList: true, subtree: true, attributes: true });
-        
+
         return () => observer.disconnect();
       }
     }, 500);
@@ -66,25 +65,25 @@ const PhoneMockup: React.FC = () => {
 
   const handleCallToggle = async () => {
     if (widgetRef.current && widgetRef.current.shadowRoot) {
-        const btn = widgetRef.current.shadowRoot.querySelector('button');
-        if (btn) {
-            btn.click();
-            
-            if (!isConnected) {
-                setIsConnecting(true);
-                // Simulate connection delay
-                setTimeout(() => {
-                    setIsConnecting(false);
-                    setIsConnected(true);
-                }, 2000);
-            } else {
-                setIsConnected(false);
-            }
+      const btn = widgetRef.current.shadowRoot.querySelector('button');
+      if (btn) {
+        btn.click();
+
+        if (!isConnected) {
+          setIsConnecting(true);
+          // Simulate connection delay
+          setTimeout(() => {
+            setIsConnecting(false);
+            setIsConnected(true);
+          }, 2000);
         } else {
-            console.error("ElevenLabs internal button not found");
+          setIsConnected(false);
         }
+      } else {
+        console.error("ElevenLabs internal button not found");
+      }
     } else {
-        console.error("Widget not ready");
+      console.error("Widget not ready");
     }
   };
 
@@ -127,10 +126,10 @@ const PhoneMockup: React.FC = () => {
           </div>
           <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-center">Ansa (AI)</h3>
           <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/5">
-             <span className={`w - 2 h - 2 rounded - full shadow - [0_0_8px_rgba(74, 222, 128, 0.8)] bg - green - 400 ${ isConnected ? 'animate-pulse' : '' } `}></span>
-             <span className="text-xs font-medium tracking-wide text-green-100">
-               {isConnected ? 'Live' : (isConnecting ? 'Connecting...' : 'Ready to Chat')}
-             </span>
+            <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)] bg-green-400 ${isConnected ? 'animate-pulse' : ''}`}></span>
+            <span className="text-xs font-medium tracking-wide text-green-100">
+              {isConnected ? 'Live' : (isConnecting ? 'Connecting...' : 'Ready to Chat')}
+            </span>
           </div>
         </div>
 
@@ -139,7 +138,7 @@ const PhoneMockup: React.FC = () => {
           {isConnected ? (
             [...Array(6)].map((_, i) => (
               <div key={i} className="waveform-bar w-2 bg-white rounded-full h-1/2" style={{
-                animationDuration: `${ 0.6 + Math.random() * 0.4 } s`
+                animationDuration: `${0.6 + Math.random() * 0.4}s`
               }}></div>
             ))
           ) : (
@@ -153,16 +152,16 @@ const PhoneMockup: React.FC = () => {
 
         {/* Controls */}
         <div className="relative z-10 pb-12 sm:pb-16 px-8 flex justify-center items-center">
-            
-            {/* Hidden ElevenLabs Widget */}
-            <elevenlabs-convai 
-                ref={widgetRef} 
-                agent-id="agent_9301kgm7s9v7e5z9ptmdzgqjcsn0"
-                style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
-            ></elevenlabs-convai>
 
-            {/* Custom UI Buttons */}
-            {!isConnected && !isConnecting && (
+          {/* Hidden ElevenLabs Widget */}
+          <elevenlabs-convai
+            ref={widgetRef}
+            agent-id="agent_9301kgm7s9v7e5z9ptmdzgqjcsn0"
+            style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
+          ></elevenlabs-convai>
+
+          {/* Custom UI Buttons */}
+          {!isConnected && !isConnecting && (
             <div className="flex flex-col items-center gap-4">
               <button
                 onClick={handleCallToggle}
