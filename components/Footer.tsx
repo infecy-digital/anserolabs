@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <footer className="bg-slate-50 border-t border-slate-200 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
-          
+
           {/* Brand */}
           <div className="max-w-xs">
             {/* Logo - Option 2 */}
@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
               <ul className="space-y-3 text-sm text-slate-600">
                 <li className="flex items-center gap-2">
                   <Mail size={14} />
-                  <span>hello@anserolabs.com</span>
+                  <span>infecy@gmail.com</span>
                 </li>
                 <li>
                   <a href="https://calendly.com" className="text-primary font-medium hover:underline">
@@ -71,8 +71,8 @@ const Footer: React.FC = () => {
         <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <p>&copy; {new Date().getFullYear()} Ansero Labs. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-slate-900">Privacy Policy</a>
-            <a href="#" className="hover:text-slate-900">Terms of Service</a>
+            <a href="#privacy-policy" className="hover:text-slate-900">Privacy Policy</a>
+            <a href="#terms-of-service" className="hover:text-slate-900">Terms of Service</a>
           </div>
         </div>
       </div>
