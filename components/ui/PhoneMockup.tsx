@@ -144,7 +144,7 @@ const PhoneMockup: React.FC = () => {
           <div className="flex items-center gap-2 mt-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/5">
             <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)] bg-green-400 ${isConnected ? 'animate-pulse' : ''}`}></span>
             <span className="text-xs font-medium tracking-wide text-green-100">
-              {isConnected ? 'Live' : (isConnecting ? 'Connecting...' : 'Ready to Chat')}
+              {isConnected ? 'Call in Progress' : (isConnecting ? 'Connecting...' : 'Online')}
             </span>
           </div>
         </div>
