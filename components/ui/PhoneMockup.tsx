@@ -115,6 +115,12 @@ const PhoneMockup: React.FC = () => {
       } catch (err) {
         console.error('Error starting call:', err);
         setIsConnecting(false);
+        // User-friendly error
+        if (window.location.hostname === 'localhost') {
+          alert('Cannot start call on Localhost: The backend API (/api/retell/create-web-call) requires Vercel deployment. Please test on the deployed site.');
+        } else {
+          alert('Failed to start call. Please check console for details.');
+        }
       }
     }
   };
