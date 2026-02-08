@@ -1,15 +1,17 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+export const config = {
+    runtime: 'edge',
+};
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+export default async function handler(request: Request) {
+    if (request.method !== 'POST') {
+        return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
     }
 
     const apiKey = process.env.RETELL_API_KEY;
-    const agentId = process.env.RETELL_AGENT_ID || 'agent_ac1b29fd30e9b8a580acee2041'; // Fallback to provided ID
+    const agentId = process.env.RETELL_AGENT_ID || 'agent_ac1b29fd30e9b8a580acee2041';
 
     if (!apiKey) {
-        return res.status(500).json({ error: 'Missing RETELL_API_KEY' });
+        return new Response(JSON.stringify({ error: 'Missing RETELL_API_KEY' }), { status: 500 });
     }
 
     try {
@@ -30,9 +32,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const data = await response.json();
-        return res.status(200).json(data);
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
     } catch (error: any) {
         console.error('Error creating web call:', error);
-        return res.status(500).json({ error: error.message });
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
     }
 }
