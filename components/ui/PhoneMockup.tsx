@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Wifi, Signal, Battery, Phone, Loader2 } from 'lucide-react';
 
+// Define Retell Client interface loosely since we are dynamic importing
+interface RetellWebClient {
+  startConversation: (request: { callId: string; enableUpdate?: boolean; sampleRate?: number }) => Promise<void>;
+  stopConversation: () => void;
+  on: (event: string, callback: (data?: any) => void) => void;
+  off: (event: string, callback: (data?: any) => void) => void;
+}
+
 const PhoneMockup: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [volume, setVolume] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false); // For visualizer
 
-  // Refs for SDK and Conversation
-  const conversationRef = useRef<any>(null);
-  const ConversationClassRef = useRef<any>(null);
+  // Refs
+  const retellClientRef = useRef<any>(null);
 
   // Clock Effect
   useEffect(() => {
@@ -22,84 +29,93 @@ const PhoneMockup: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Load ElevenLabs SDK from ESM.sh to avoid npm install issues
+  // Initialize Retell Client
   useEffect(() => {
-    const loadSDK = async () => {
+    const initRetell = async () => {
       try {
-        // Dynamic import to bypass local resolution
-        // @ts-ignore
-        const module = await import(/* @vite-ignore */ 'https://esm.sh/@elevenlabs/client');
-        ConversationClassRef.current = module.Conversation;
-        console.log("ElevenLabs SDK loaded");
+        // Dynamic import from esm.sh
+        const module = await import(/* @vite-ignore */ 'https://esm.sh/retell-client-js-sdk');
+        const RetellWebClient = module.RetellWebClient;
+
+        const client = new RetellWebClient();
+        retellClientRef.current = client;
+
+        // Setup Event Listeners
+        client.on('call_started', () => {
+          console.log('Call started');
+          setIsConnecting(false);
+          setIsConnected(true);
+        });
+
+        client.on('call_ended', () => {
+          console.log('Call ended');
+          setIsConnected(false);
+          setIsConnecting(false);
+          setIsSpeaking(false);
+        });
+
+        // "update" event provides audio data and state, but "agent_start_talking" is simpler for UI
+        client.on('agent_start_talking', () => {
+          setIsSpeaking(true);
+        });
+
+        client.on('agent_stop_talking', () => {
+          setIsSpeaking(false);
+        });
+
+        client.on('error', (error: any) => {
+          console.error('Retell error:', error);
+          setIsConnecting(false);
+          setIsConnected(false);
+        });
+
+        console.log("Retell SDK initialized");
       } catch (err) {
-        console.error("Failed to load ElevenLabs SDK", err);
+        console.error("Failed to load Retell SDK:", err);
       }
     };
-    loadSDK();
 
+    initRetell();
+
+    // Cleanup
     return () => {
-      if (conversationRef.current) {
-        conversationRef.current.endSession();
+      if (retellClientRef.current) {
+        retellClientRef.current.stopConversation();
       }
     };
   }, []);
 
-  const startConversation = async () => {
-    if (!ConversationClassRef.current) {
-      console.error("SDK not loaded yet");
-      return;
-    }
-
-    try {
-      setIsConnecting(true);
-
-      // Request microphone permission first
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      const conversation = await ConversationClassRef.current.startSession({
-        agentId: 'agent_9301kgm7s9v7e5z9ptmdzgqjcsn0',
-        onConnect: () => {
-          console.log("Connected to ElevenLabs");
-          setIsConnecting(false);
-          setIsConnected(true);
-        },
-        onDisconnect: () => {
-          console.log("Disconnected from ElevenLabs");
-          setIsConnected(false);
-          setIsConnecting(false);
-          setVolume(0);
-        },
-        onError: (error: any) => {
-          console.error("ElevenLabs Error:", error);
-          setIsConnecting(false);
-          setIsConnected(false);
-        },
-        onModeChange: (mode: { mode: string }) => {
-          console.log("Mode changed:", mode);
-          // If accessing speaking/listening state becomes available
-        },
-      });
-
-      conversationRef.current = conversation;
-
-    } catch (err) {
-      console.error("Failed to start conversation:", err);
-      setIsConnecting(false);
-    }
-  };
-
-  const stopConversation = async () => {
-    if (conversationRef.current) {
-      await conversationRef.current.endSession();
-      conversationRef.current = null;
-    }
-  };
-
-  const handleCallToggle = () => {
+  const handleCallToggle = async () => {
     if (isConnected) {
-      stopConversation();
+      if (retellClientRef.current) {
+        retellClientRef.current.stopConversation();
+      }
     } else {
-      startConversation();
+      setIsConnecting(true);
+      try {
+        // 1. Get Access Token from our backend
+        // Note: In development/CORS environments, ensure the backend allows the origin.
+        // Assuming /api is proxied or same-origin in production.
+        const response = await fetch('/api/retell/create-web-call', {
+          method: 'POST',
+        });
+
+        if (!response.ok) throw new Error('Failed to get access token');
+        const data = await response.json();
+
+        if (retellClientRef.current && data.access_token) {
+          // 2. Start Conversation
+          await retellClientRef.current.startConversation({
+            accessToken: data.access_token,
+          });
+        } else {
+          throw new Error('Retell client not ready or no token');
+        }
+
+      } catch (err) {
+        console.error('Error starting call:', err);
+        setIsConnecting(false);
+      }
     }
   };
 
@@ -154,7 +170,8 @@ const PhoneMockup: React.FC = () => {
           {isConnected ? (
             [...Array(6)].map((_, i) => (
               <div key={i} className="waveform-bar w-2 bg-white rounded-full h-1/2" style={{
-                animationDuration: `${0.6 + Math.random() * 0.4}s`
+                animationDuration: `${0.6 + Math.random() * 0.4}s`,
+                opacity: isSpeaking ? 1 : 0.3 // Dim when not speaking
               }}></div>
             ))
           ) : (
