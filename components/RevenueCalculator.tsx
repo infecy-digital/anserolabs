@@ -27,10 +27,10 @@ const RevenueCalculator: React.FC = () => {
                     <div className="lg:w-[48%] pr-0 lg:pr-12">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold uppercase tracking-wider mb-6">
                             <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                            ROI Calculator
+                            Missed call revenue calculator
                         </div>
                         <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-                            How Much Revenue Are <span className="text-orange-500">Missed Calls</span> Costing You?
+                            Estimate what <span className="text-orange-500">missed calls</span> may be costing your business each month
                         </h2>
                         <p className="text-lg text-slate-600 mb-10 leading-[1.6]">
                             Every unanswered call is a potential customer walking away to your competitor.
