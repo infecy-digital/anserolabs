@@ -19,16 +19,16 @@ const RevenueCalculator: React.FC = () => {
     }, [callsPerDay, missedCallRate, conversionRate, avgJobValue]);
 
     return (
-        <section className="py-20 bg-slate-50 overflow-hidden">
+        <section className="py-16 lg:py-24 bg-slate-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+                <div className="flex flex-col lg:flex-row gap-12 lg:gap-0 items-center justify-between">
 
                     {/* Left Column - Content */}
-                    <div className="lg:w-[45%]">
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-6">
+                    <div className="lg:w-[48%] pr-0 lg:pr-12">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
                             How Much Revenue Are <span className="text-orange-500">Missed Calls</span> Costing You?
                         </h2>
-                        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                        <p className="text-lg text-slate-600 mb-10 leading-[1.6]">
                             Every unanswered call is a potential customer walking away to your competitor.
                             Small businesses miss an average of 20 - 30% of calls daily. See what that actually costs your bottom line.
                         </p>
@@ -50,8 +50,8 @@ const RevenueCalculator: React.FC = () => {
                     </div>
 
                     {/* Right Column - Calculator Card */}
-                    <div className="lg:w-[55%] w-full">
-                        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 relative overflow-hidden">
+                    <div className="lg:w-[52%] w-full flex justify-center lg:justify-end">
+                        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 relative overflow-hidden w-full max-w-[520px]">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500"></div>
 
                             <div className="space-y-8">
