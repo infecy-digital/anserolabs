@@ -25,7 +25,11 @@ const RevenueCalculator: React.FC = () => {
 
                     {/* Left Column - Content */}
                     <div className="lg:w-[48%] pr-0 lg:pr-12">
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-8">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold uppercase tracking-wider mb-6">
+                            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                            ROI Calculator
+                        </div>
+                        <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
                             How Much Revenue Are <span className="text-orange-500">Missed Calls</span> Costing You?
                         </h2>
                         <p className="text-lg text-slate-600 mb-10 leading-[1.6]">
@@ -49,15 +53,14 @@ const RevenueCalculator: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right Column - Calculator Card */}
                     <div className="lg:w-[52%] w-full flex justify-center lg:justify-end">
-                        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 relative overflow-hidden w-full max-w-[520px]">
+                        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8 relative overflow-hidden w-full max-w-[500px]">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500"></div>
 
-                            <div className="space-y-8">
+                            <div className="space-y-6">
                                 {/* Input 1: Calls Per Day */}
                                 <div>
-                                    <div className="flex justify-between mb-2">
+                                    <div className="flex justify-between mb-1">
                                         <label className="text-sm font-semibold text-slate-700">Average Calls Per Day</label>
                                         <span className="text-sm font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">{callsPerDay}</span>
                                     </div>
@@ -73,7 +76,7 @@ const RevenueCalculator: React.FC = () => {
 
                                 {/* Input 2: Missed Call % */}
                                 <div>
-                                    <div className="flex justify-between mb-2">
+                                    <div className="flex justify-between mb-1">
                                         <label className="text-sm font-semibold text-slate-700">Missed Call Percentage</label>
                                         <span className="text-sm font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">{missedCallRate}%</span>
                                     </div>
@@ -94,7 +97,7 @@ const RevenueCalculator: React.FC = () => {
 
                                 {/* Input 3: Conversion Rate */}
                                 <div>
-                                    <div className="flex justify-between mb-2">
+                                    <div className="flex justify-between mb-1">
                                         <label className="text-sm font-semibold text-slate-700">Customer Conversion Rate</label>
                                         <span className="text-sm font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">{conversionRate}%</span>
                                     </div>
@@ -110,7 +113,7 @@ const RevenueCalculator: React.FC = () => {
 
                                 {/* Input 4: Job Value */}
                                 <div>
-                                    <div className="flex justify-between mb-2">
+                                    <div className="flex justify-between mb-1">
                                         <label className="text-sm font-semibold text-slate-700">Average Job Value ($)</label>
                                     </div>
                                     <div className="relative">
@@ -119,24 +122,24 @@ const RevenueCalculator: React.FC = () => {
                                             type="number"
                                             value={avgJobValue}
                                             onChange={(e) => setAvgJobValue(Number(e.target.value))}
-                                            className="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none font-semibold text-slate-900 transition-all"
+                                            className="w-full pl-8 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none font-semibold text-slate-900 transition-all"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="h-px bg-slate-100 my-6"></div>
+                                <div className="h-px bg-slate-100 my-4"></div>
 
                                 {/* Result Display */}
-                                <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col items-center text-center">
-                                    <span className="text-sm text-slate-500 font-medium uppercase tracking-wider mb-1">Estimated Monthly Loss</span>
-                                    <div className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 mb-2">
+                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center text-center">
+                                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Estimated Monthly Loss</span>
+                                    <div className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 mb-1">
                                         ${monthlyRevenueLost.toLocaleString()}
                                     </div>
-                                    <p className="text-sm text-slate-400">that could be recovered with AI</p>
+                                    <p className="text-xs text-slate-400">that could be recovered with AI</p>
                                 </div>
 
-                                <div className="pt-2">
-                                    <Button href="https://calendly.com" fullWidth className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/30 text-lg py-4 group">
+                                <div>
+                                    <Button href="https://calendly.com" fullWidth className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/30 text-base py-3 group">
                                         <span className="flex items-center justify-center gap-2">
                                             See How AI Recovers This <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                                         </span>
