@@ -223,14 +223,19 @@ const PhoneMockup: React.FC = () => {
 
           {/* Custom UI Buttons */}
           {!isConnected && !isConnecting && (
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 relative">
+              {/* Idle Pulsing Ring (Always active when not connected) */}
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full rounded-full -z-10 ${isPulsing ? 'bg-orange-500/30 animate-ping' : 'bg-green-500/20 animate-pulse'}`}></div>
+
               <button
                 onClick={handleCallToggle}
-                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10 ${isPulsing ? 'animate-pulse ring-4 ring-green-400/50 ring-offset-2 ring-offset-slate-900' : ''}`}
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10 ${isPulsing ? 'ring-4 ring-orange-400 ring-offset-2 ring-offset-slate-900 scale-110' : ''}`}
               >
-                <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current" />
+                <Phone className={`w-6 h-6 sm:w-8 sm:h-8 text-white fill-current ${isPulsing ? 'animate-wiggle' : ''}`} />
               </button>
-              <span className={`text-sm font-medium transition-colors duration-300 ${isPulsing ? 'text-green-400 font-bold' : 'text-slate-300'}`}>Tap to call</span>
+              <span className={`text-sm font-medium transition-colors duration-300 ${isPulsing ? 'text-orange-400 font-bold' : 'text-slate-300'}`}>
+                {isPulsing ? 'AI Agent Ready!' : 'Tap to call'}
+              </span>
             </div>
           )}
 
