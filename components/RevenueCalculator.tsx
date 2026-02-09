@@ -47,8 +47,8 @@ const RevenueCalculator: React.FC = () => {
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-0 items-center justify-between">
 
                     {/* Left Column - Content */}
-                    <div className="lg:w-[48%] pr-0 lg:pr-12 text-center lg:text-center">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold uppercase tracking-wider mb-6 mx-auto">
+                    <div className="lg:w-[48%] pr-0 lg:pr-12 text-center lg:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold uppercase tracking-wider mb-6 mx-auto lg:mx-0">
                             <span className="w-2 h-2 rounded-full bg-orange-500"></span>
                             Missed call revenue calculator
                         </div>
@@ -60,7 +60,7 @@ const RevenueCalculator: React.FC = () => {
                             Small businesses miss an average of 20 - 30% of calls daily. See what that actually costs your bottom line.
                         </p>
 
-                        <div className="space-y-4 mb-10 flex flex-col items-center">
+                        <div className="space-y-4 mb-10 flex flex-col items-center lg:items-start">
                             {[
                                 "Instant calculation based on industry averages",
                                 "See the hidden cost of 'busy' times",
