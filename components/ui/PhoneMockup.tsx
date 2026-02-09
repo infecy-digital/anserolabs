@@ -14,6 +14,34 @@ const PhoneMockup: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false); // For visualizer
+  const [isPulsing, setIsPulsing] = useState(false); // For scroll interaction
+
+  // Reference for the pulse timeout
+  const pulseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Listen for custom trigger pulse event
+  useEffect(() => {
+    const handleTriggerPulse = () => {
+      setIsPulsing(true);
+      // Clear existing timeout if any
+      if (pulseTimeoutRef.current) {
+        clearTimeout(pulseTimeoutRef.current);
+      }
+      // Stop pulsing after 3 seconds
+      pulseTimeoutRef.current = setTimeout(() => {
+        setIsPulsing(false);
+      }, 3000);
+    };
+
+    window.addEventListener('trigger-call-pulse', handleTriggerPulse);
+
+    return () => {
+      window.removeEventListener('trigger-call-pulse', handleTriggerPulse);
+      if (pulseTimeoutRef.current) {
+        clearTimeout(pulseTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Refs
   const retellClientRef = useRef<any>(null);
@@ -127,7 +155,7 @@ const PhoneMockup: React.FC = () => {
   };
 
   return (
-    <div className="relative mx-auto w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-4 shadow-2xl border-4 border-slate-800 ring-1 ring-white/20 select-none transform sm:hover:scale-[1.02] transition-transform duration-500 overflow-hidden">
+    <div id="ansero-demo-phone" className="relative mx-auto w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-4 shadow-2xl border-4 border-slate-800 ring-1 ring-white/20 select-none transform sm:hover:scale-[1.02] transition-transform duration-500 overflow-hidden">
       {/* Glare Effect */}
       <div className="absolute top-0 right-0 w-[200%] h-full bg-gradient-to-l from-transparent via-white/5 to-transparent skew-x-12 z-20 pointer-events-none"></div>
 
@@ -198,11 +226,11 @@ const PhoneMockup: React.FC = () => {
             <div className="flex flex-col items-center gap-4">
               <button
                 onClick={handleCallToggle}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10"
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10 ${isPulsing ? 'animate-pulse ring-4 ring-green-400/50 ring-offset-2 ring-offset-slate-900' : ''}`}
               >
                 <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white fill-current" />
               </button>
-              <span className="text-sm font-medium text-slate-300">Tap to call</span>
+              <span className={`text-sm font-medium transition-colors duration-300 ${isPulsing ? 'text-green-400 font-bold' : 'text-slate-300'}`}>Tap to call</span>
             </div>
           )}
 

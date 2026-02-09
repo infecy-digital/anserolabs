@@ -163,7 +163,20 @@ const RevenueCalculator: React.FC = () => {
                                 </div>
 
                                 <div className="flex justify-center pt-2 w-full">
-                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-6 group w-full max-w-[340px]">
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            const phoneElement = document.getElementById('ansero-demo-phone');
+                                            if (phoneElement) {
+                                                phoneElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                                // Trigger pulse effect slightly after scroll starts
+                                                setTimeout(() => {
+                                                    window.dispatchEvent(new CustomEvent('trigger-call-pulse'));
+                                                }, 800);
+                                            }
+                                        }}
+                                        className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-6 group w-full max-w-[340px]"
+                                    >
                                         <div className="flex items-center justify-center gap-2 w-full whitespace-nowrap">
                                             <span>See How AI Recovers This</span>
                                             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform flex-shrink-0" />
