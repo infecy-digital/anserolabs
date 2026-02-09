@@ -53,11 +53,11 @@ const RevenueCalculator: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="lg:w-[52%] w-full flex justify-center lg:justify-center">
-                        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 sm:p-9 relative overflow-hidden w-full max-w-[500px]">
+                    <div className="lg:w-[52%] w-full flex justify-center lg:justify-end">
+                        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8 relative overflow-hidden w-full max-w-[500px]">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500"></div>
 
-                            <div className="space-y-8">
+                            <div className="space-y-6">
                                 {/* Input 1: Calls Per Day */}
                                 <div>
                                     <div className="flex justify-between mb-1">
@@ -127,13 +127,13 @@ const RevenueCalculator: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="h-px bg-slate-100 my-6"></div>
+                                <div className="h-px bg-slate-100 my-4"></div>
 
                                 {/* Result Display */}
-                                <div className="bg-orange-50/50 rounded-2xl p-6 border border-orange-100 flex flex-col items-center text-center relative overflow-hidden">
+                                <div className="bg-orange-50/50 rounded-2xl p-5 border border-orange-100 flex flex-col items-center text-center relative overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none"></div>
-                                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2 relative z-10">Estimated Monthly Loss</span>
-                                    <div className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-1 relative z-10 tracking-tight">
+                                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1 relative z-10">Estimated Monthly Loss</span>
+                                    <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-1 relative z-10 tracking-tight">
                                         ${monthlyRevenueLost.toLocaleString()}
                                     </div>
                                     <p className="text-xs text-slate-500 relative z-10">that could be recovered with AI</p>
