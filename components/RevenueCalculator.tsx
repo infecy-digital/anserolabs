@@ -139,11 +139,12 @@ const RevenueCalculator: React.FC = () => {
                                     <p className="text-xs text-slate-500 relative z-10">that could be recovered with AI</p>
                                 </div>
 
-                                <div className="flex justify-center pt-2">
-                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-8 group w-full max-w-[260px]">
-                                        <span className="flex items-center justify-center gap-2">
-                                            See How AI Recovers This <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                                        </span>
+                                <div className="flex justify-center pt-2 w-full">
+                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-8 group w-full max-w-[280px]">
+                                        <div className="flex items-center justify-center gap-2 w-full">
+                                            <span>See How AI Recovers This</span>
+                                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                                        </div>
                                     </Button>
                                 </div>
 
