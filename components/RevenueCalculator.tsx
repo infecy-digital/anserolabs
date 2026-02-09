@@ -53,7 +53,7 @@ const RevenueCalculator: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="lg:w-[52%] w-full flex justify-center lg:justify-end">
+                    <div className="lg:w-[52%] w-full flex justify-center lg:justify-center">
                         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 sm:p-9 relative overflow-hidden w-full max-w-[500px]">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500"></div>
 
@@ -140,8 +140,8 @@ const RevenueCalculator: React.FC = () => {
                                 </div>
 
                                 <div className="flex justify-center pt-2 w-full">
-                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-8 group w-full max-w-[280px]">
-                                        <div className="flex items-center justify-center gap-2 w-full">
+                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-6 group w-full max-w-[340px]">
+                                        <div className="flex items-center justify-center gap-2 w-full whitespace-nowrap">
                                             <span>See How AI Recovers This</span>
                                             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform flex-shrink-0" />
                                         </div>
