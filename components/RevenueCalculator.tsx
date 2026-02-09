@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import Button from './ui/Button';
 
@@ -8,6 +8,26 @@ const RevenueCalculator: React.FC = () => {
     const [conversionRate, setConversionRate] = useState(15);
     const [avgJobValue, setAvgJobValue] = useState(350);
     const [monthlyRevenueLost, setMonthlyRevenueLost] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         // Calculation: (Calls * Missed%) * Conversion% * JobValue * 30 days
@@ -19,7 +39,10 @@ const RevenueCalculator: React.FC = () => {
     }, [callsPerDay, missedCallRate, conversionRate, avgJobValue]);
 
     return (
-        <section className="pt-10 pb-16 lg:pt-16 lg:pb-24 bg-slate-50 overflow-hidden">
+        <section
+            ref={sectionRef}
+            className={`pt-10 pb-16 lg:pt-16 lg:pb-24 bg-slate-50 overflow-hidden transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+        >
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-0 items-center justify-between">
 
