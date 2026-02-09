@@ -54,10 +54,10 @@ const RevenueCalculator: React.FC = () => {
                     </div>
 
                     <div className="lg:w-[52%] w-full flex justify-center lg:justify-end">
-                        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8 relative overflow-hidden w-full max-w-[500px]">
+                        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 sm:p-9 relative overflow-hidden w-full max-w-[500px]">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500"></div>
 
-                            <div className="space-y-6">
+                            <div className="space-y-8">
                                 {/* Input 1: Calls Per Day */}
                                 <div>
                                     <div className="flex justify-between mb-1">
@@ -127,19 +127,20 @@ const RevenueCalculator: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="h-px bg-slate-100 my-4"></div>
+                                <div className="h-px bg-slate-100 my-6"></div>
 
                                 {/* Result Display */}
-                                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center text-center">
-                                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Estimated Monthly Loss</span>
-                                    <div className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 mb-1">
+                                <div className="bg-orange-50/50 rounded-2xl p-6 border border-orange-100 flex flex-col items-center text-center relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none"></div>
+                                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2 relative z-10">Estimated Monthly Loss</span>
+                                    <div className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-1 relative z-10 tracking-tight">
                                         ${monthlyRevenueLost.toLocaleString()}
                                     </div>
-                                    <p className="text-xs text-slate-400">that could be recovered with AI</p>
+                                    <p className="text-xs text-slate-500 relative z-10">that could be recovered with AI</p>
                                 </div>
 
-                                <div>
-                                    <Button href="https://calendly.com" fullWidth className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/30 text-base py-3 group">
+                                <div className="flex justify-center pt-2">
+                                    <Button href="https://calendly.com" className="!bg-orange-500 hover:!bg-orange-600 !shadow-orange-500/20 text-base py-3 px-8 group w-full max-w-[260px]">
                                         <span className="flex items-center justify-center gap-2">
                                             See How AI Recovers This <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                                         </span>
