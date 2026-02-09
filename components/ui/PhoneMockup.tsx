@@ -223,17 +223,26 @@ const PhoneMockup: React.FC = () => {
 
           {/* Custom UI Buttons */}
           {!isConnected && !isConnecting && (
-            <div className="flex flex-col items-center gap-4 relative">
-              {/* Idle Pulsing Ring (Always active when not connected) */}
-              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full rounded-full -z-10 ${isPulsing ? 'bg-orange-500/30 animate-ping' : 'bg-green-500/20 animate-pulse'}`}></div>
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                {/* Idle Ring (Breathing) */}
+                {!isPulsing && (
+                  <div className="absolute inset-0 -m-4 rounded-full bg-green-400/20 animate-ping [animation-duration:3s]"></div>
+                )}
+                {/* Active Ring (Solid Glow) */}
+                {isPulsing && (
+                  <div className="absolute inset-0 -m-2 rounded-full bg-orange-500/40 blur-md scale-110 transition-all duration-500"></div>
+                )}
 
-              <button
-                onClick={handleCallToggle}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 hover:bg-green-400 shadow-[0_8px_20px_rgba(34,197,94,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 group border border-white/10 ${isPulsing ? 'ring-4 ring-orange-400 ring-offset-2 ring-offset-slate-900 scale-110' : ''}`}
-              >
-                <Phone className={`w-6 h-6 sm:w-8 sm:h-8 text-white fill-current ${isPulsing ? 'animate-wiggle' : ''}`} />
-              </button>
-              <span className={`text-sm font-medium transition-colors duration-300 ${isPulsing ? 'text-orange-400 font-bold' : 'text-slate-300'}`}>
+                <button
+                  onClick={handleCallToggle}
+                  className={`relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-2xl flex items-center justify-center transition-all duration-500 ease-out border border-white/10 ${isPulsing ? 'bg-orange-500 hover:bg-orange-400 scale-110 shadow-orange-500/50' : 'bg-green-500 hover:bg-green-400 hover:scale-105 active:scale-95 shadow-green-500/30'}`}
+                >
+                  <Phone className={`w-6 h-6 sm:w-8 sm:h-8 text-white fill-current transition-transform duration-500 ${isPulsing ? 'rotate-12 scale-110' : ''}`} />
+                </button>
+              </div>
+
+              <span className={`text-sm font-medium transition-all duration-500 ${isPulsing ? 'text-orange-400 font-bold scale-105' : 'text-slate-300'}`}>
                 {isPulsing ? 'AI Agent Ready!' : 'Tap to call'}
               </span>
             </div>
