@@ -5,7 +5,7 @@ import { Briefcase, Building2, Stethoscope, Scale } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative pt-24 pb-20 lg:pt-36 lg:pb-24 overflow-hidden">
+    <section className="relative pt-20 pb-12 lg:pt-32 lg:pb-16 overflow-hidden">
       {/* Background decoration with Noise */}
       <div className="absolute inset-0 bg-noise opacity-50 z-0 pointer-events-none"></div>
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[800px] h-[800px] bg-primary/10 rounded-full blur-3xl -z-10"></div>

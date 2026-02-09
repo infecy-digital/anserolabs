@@ -19,7 +19,7 @@ const RevenueCalculator: React.FC = () => {
     }, [callsPerDay, missedCallRate, conversionRate, avgJobValue]);
 
     return (
-        <section className="py-16 lg:py-24 bg-slate-50 overflow-hidden">
+        <section className="pt-10 pb-16 lg:pt-16 lg:pb-24 bg-slate-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-0 items-center justify-between">
 
