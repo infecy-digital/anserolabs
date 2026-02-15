@@ -171,7 +171,10 @@ const RevenueCalculator: React.FC = () => {
                                                 phoneElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                                 // Trigger pulse effect slightly after scroll starts
                                                 setTimeout(() => {
-                                                    window.dispatchEvent(new CustomEvent('trigger-call-pulse'));
+                                                    const event = new CustomEvent('trigger-call-pulse', {
+                                                        detail: { lostRevenue: monthlyRevenueLost } // Pass calculated value
+                                                    });
+                                                    window.dispatchEvent(event);
                                                 }, 800);
                                             }
                                         }}

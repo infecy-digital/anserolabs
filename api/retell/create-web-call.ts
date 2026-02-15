@@ -15,6 +15,13 @@ export default async function handler(request: Request) {
     }
 
     try {
+        const body = await request.json().catch(() => ({}));
+        const { lostRevenue } = body;
+
+        const metadata = lostRevenue
+            ? { lost_revenue: lostRevenue, calculator_used: "YES" }
+            : { calculator_used: "NO" };
+
         const response = await fetch('https://api.retellai.com/v2/create-web-call', {
             method: 'POST',
             headers: {
@@ -23,6 +30,7 @@ export default async function handler(request: Request) {
             },
             body: JSON.stringify({
                 agent_id: agentId,
+                metadata,
             }),
         });
 

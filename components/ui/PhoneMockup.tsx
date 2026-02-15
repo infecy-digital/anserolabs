@@ -15,14 +15,23 @@ const PhoneMockup: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false); // For visualizer
   const [isPulsing, setIsPulsing] = useState(false); // For scroll interaction
+  const [potentialRevenue, setPotentialRevenue] = useState<number | null>(null);
 
   // Reference for the pulse timeout
   const pulseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Listen for custom trigger pulse event
   useEffect(() => {
-    const handleTriggerPulse = () => {
+    const handleTriggerPulse = (event: Event) => {
+      const customEvent = event as CustomEvent;
       setIsPulsing(true);
+
+      // Capture the lost revenue if passed
+      if (customEvent.detail && customEvent.detail.lostRevenue) {
+        setPotentialRevenue(customEvent.detail.lostRevenue);
+        console.log("Captured lost revenue:", customEvent.detail.lostRevenue);
+      }
+
       // Clear existing timeout if any
       if (pulseTimeoutRef.current) {
         clearTimeout(pulseTimeoutRef.current);
@@ -126,6 +135,12 @@ const PhoneMockup: React.FC = () => {
         // Assuming /api is proxied or same-origin in production.
         const response = await fetch('/api/retell/create-web-call', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lostRevenue: potentialRevenue, // Send captured revenue loss if available
+          }),
         });
 
         if (!response.ok) throw new Error('Failed to get access token');
