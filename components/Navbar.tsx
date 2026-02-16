@@ -25,8 +25,8 @@ const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm py-3'
-          : 'bg-transparent border-transparent py-5'
+        ? 'bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm py-3'
+        : 'bg-transparent border-transparent py-5'
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
         {/* CTA */}
         <div className="hidden md:block">
           <Button href="https://calendly.com" className="!px-5 !py-2.5 text-sm shadow-md">
-            Book a Discovery Call
+            Talk to a Specialist
           </Button>
         </div>
 
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
           ))}
           <div className="mt-4">
             <Button href="https://calendly.com" fullWidth className="py-4 text-lg">
-              Book a Discovery Call
+              Talk to a Specialist
             </Button>
           </div>
         </div>
