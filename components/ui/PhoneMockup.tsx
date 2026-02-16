@@ -122,7 +122,7 @@ const PhoneMockup: React.FC = () => {
     };
   }, []);
 
-  const handleCallToggle = async () => {
+  const handleCallToggle = React.useCallback(async () => {
     if (isConnected) {
       if (retellClientRef.current) {
         retellClientRef.current.stopCall();
@@ -167,7 +167,19 @@ const PhoneMockup: React.FC = () => {
         }
       }
     }
-  };
+  }, [isConnected, potentialRevenue]);
+
+  // Listen for custom trigger demo start event
+  useEffect(() => {
+    const handleDemoStart = () => {
+      handleCallToggle();
+    };
+
+    window.addEventListener('trigger-demo-start', handleDemoStart);
+    return () => {
+      window.removeEventListener('trigger-demo-start', handleDemoStart);
+    };
+  }, [handleCallToggle]);
 
   return (
     <div id="ansero-demo-phone" className="relative mx-auto w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-4 shadow-2xl border-4 border-slate-800 ring-1 ring-white/20 select-none transform sm:hover:scale-[1.02] transition-transform duration-500 overflow-hidden">

@@ -37,8 +37,12 @@ const Hero: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-              <Button href="https://calendly.com" className="text-lg px-8 py-4 shadow-orange-500/20" withIcon>
-                Get Your Custom Demo
+              <Button
+                onClick={() => window.dispatchEvent(new CustomEvent('trigger-demo-start'))}
+                className="text-lg px-8 py-4 shadow-orange-500/20"
+                withIcon
+              >
+                Start Live Demo
               </Button>
             </div>
 
