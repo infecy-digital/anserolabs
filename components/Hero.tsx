@@ -4,6 +4,8 @@ import PhoneMockup from './ui/PhoneMockup';
 import { Briefcase, Building2, Stethoscope, Scale } from 'lucide-react';
 
 const Hero: React.FC = () => {
+  const [callState, setCallState] = React.useState({ isConnecting: false, isConnected: false });
+
   return (
     <section className="relative pt-20 pb-12 lg:pt-32 lg:pb-16 overflow-hidden">
       {/* Background decoration with Noise */}
@@ -39,10 +41,20 @@ const Hero: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
               <Button
                 onClick={() => window.dispatchEvent(new CustomEvent('trigger-demo-start'))}
-                className="text-lg px-8 py-4 shadow-orange-500/20"
-                withIcon
+                className={`text-lg px-8 py-4 shadow-orange-500/20 transition-all duration-300 ${callState.isConnected
+                    ? '!bg-green-500 hover:!bg-green-600 ring-4 ring-green-500/20'
+                    : callState.isConnecting
+                      ? '!bg-slate-700 !cursor-wait'
+                      : ''
+                  }`}
+                withIcon={!callState.isConnecting}
               >
-                Start Live Demo
+                {callState.isConnecting
+                  ? "Connecting..."
+                  : callState.isConnected
+                    ? "Demo Call in Progress..."
+                    : "Start Live Demo"
+                }
               </Button>
             </div>
 
@@ -69,7 +81,7 @@ const Hero: React.FC = () => {
           {/* Visual Content */}
           <div className="w-full lg:w-auto flex justify-center relative mt-8 lg:mt-0">
             <div className="relative z-10">
-              <PhoneMockup />
+              <PhoneMockup onCallStateChange={setCallState} />
             </div>
             {/* Decorative blob behind phone */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[650px] bg-gradient-to-tr from-slate-200 to-white rounded-[3rem] -z-10 rotate-6 blur-xl opacity-60"></div>

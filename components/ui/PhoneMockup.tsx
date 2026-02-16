@@ -9,7 +9,11 @@ interface RetellWebClient {
   off: (event: string, callback: (data?: any) => void) => void;
 }
 
-const PhoneMockup: React.FC = () => {
+interface PhoneMockupProps {
+  onCallStateChange?: (state: { isConnecting: boolean; isConnected: boolean }) => void;
+}
+
+const PhoneMockup: React.FC<PhoneMockupProps> = ({ onCallStateChange }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -180,6 +184,13 @@ const PhoneMockup: React.FC = () => {
       window.removeEventListener('trigger-demo-start', handleDemoStart);
     };
   }, [handleCallToggle]);
+
+  // Notify parent of state changes
+  useEffect(() => {
+    if (onCallStateChange) {
+      onCallStateChange({ isConnecting, isConnected });
+    }
+  }, [isConnecting, isConnected, onCallStateChange]);
 
   return (
     <div id="ansero-demo-phone" className="relative mx-auto w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-4 shadow-2xl border-4 border-slate-800 ring-1 ring-white/20 select-none transform sm:hover:scale-[1.02] transition-transform duration-500 overflow-hidden">
