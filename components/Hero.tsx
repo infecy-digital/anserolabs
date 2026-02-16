@@ -42,10 +42,10 @@ const Hero: React.FC = () => {
               <Button
                 onClick={() => window.dispatchEvent(new CustomEvent('trigger-demo-start'))}
                 className={`text-lg px-8 py-4 shadow-orange-500/20 transition-all duration-300 ${callState.isConnected
-                    ? '!bg-green-500 hover:!bg-green-600 ring-4 ring-green-500/20'
-                    : callState.isConnecting
-                      ? '!bg-slate-700 !cursor-wait'
-                      : ''
+                  ? '!bg-red-500 hover:!bg-red-600 ring-4 ring-red-500/20 shadow-red-500/20'
+                  : callState.isConnecting
+                    ? '!bg-orange-400 animate-pulse !cursor-wait'
+                    : ''
                   }`}
                 withIcon={!callState.isConnecting}
               >
