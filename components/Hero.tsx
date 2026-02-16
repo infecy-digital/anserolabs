@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
                 {callState.isConnecting
                   ? "Connecting..."
                   : callState.isConnected
-                    ? "Demo Call in Progress..."
+                    ? "End Demo Call"
                     : "Start Live Demo"
                 }
               </Button>
