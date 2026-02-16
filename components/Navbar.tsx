@@ -56,7 +56,10 @@ const Navbar: React.FC = () => {
 
         {/* CTA */}
         <div className="hidden md:block">
-          <Button href="https://calendly.com" className="!px-5 !py-2.5 text-sm shadow-md">
+          <Button
+            onClick={() => (window as any).Calendly.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' })}
+            className="!px-5 !py-2.5 text-sm shadow-md"
+          >
             Talk to a Specialist
           </Button>
         </div>
@@ -84,7 +87,11 @@ const Navbar: React.FC = () => {
             </a>
           ))}
           <div className="mt-4">
-            <Button href="https://calendly.com" fullWidth className="py-4 text-lg">
+            <Button
+              onClick={() => (window as any).Calendly.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' })}
+              fullWidth
+              className="py-4 text-lg"
+            >
               Talk to a Specialist
             </Button>
           </div>

@@ -22,7 +22,7 @@ const CTA: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                href="https://calendly.com"
+                onClick={() => (window as any).Calendly.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' })}
                 variant="secondary"
                 className="!bg-white !text-primary hover:!bg-orange-50 font-bold px-10 py-4 text-lg"
               >
