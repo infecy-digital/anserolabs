@@ -31,7 +31,7 @@ const CTA: React.FC = () => {
             </div>
 
             <p className="mt-6 text-sm text-orange-200 opacity-80">
-              No pressure. No cold calling spam. Just solutions.
+              No pressure. No sales scripts. Just clarity.
             </p>
           </div>
         </div>
