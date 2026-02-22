@@ -43,7 +43,8 @@ const Pricing: React.FC = () => {
                                 "Up to 500 minutes included",
                                 "Standard CRM Integration",
                                 "Email support",
-                                "Basic AI scripting"
+                                "Basic AI scripting",
+                                "Web-call Tracking Dashboard"
                             ].map((item, i) => (
                                 <li key={i} className="flex items-start gap-3 text-slate-600">
                                     <CheckCircle2 size={18} className="text-primary mt-0.5 shrink-0" />
@@ -114,7 +115,7 @@ const Pricing: React.FC = () => {
 
                         <div className="mt-auto">
                             <Button
-                                variant="secondary"
+                                variant="primary"
                                 fullWidth
                                 onClick={handleCalendlyClick}
                                 className="mb-4"
