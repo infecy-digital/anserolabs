@@ -7,6 +7,7 @@ import Services from './components/Services';
 import Testimonials from './components/Testimonials';
 import Process from './components/Process';
 import FAQ from './components/FAQ';
+import Pricing from './components/Pricing';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -41,6 +42,7 @@ const App: React.FC = () => {
             <Testimonials />
             <Process />
             <FAQ />
+            <Pricing />
             <CTA />
           </main>
         );
