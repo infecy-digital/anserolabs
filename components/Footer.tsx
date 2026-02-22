@@ -56,12 +56,15 @@ const Footer: React.FC = () => {
               <ul className="space-y-3 text-sm text-slate-600">
                 <li className="flex items-center gap-2">
                   <Mail size={14} />
-                  <span>infecy@gmail.com</span>
+                  <span>sumit@anserolabs.com</span>
                 </li>
                 <li>
-                  <a href="https://calendly.com" className="text-primary font-medium hover:underline">
+                  <button
+                    onClick={() => (window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' })}
+                    className="text-primary font-medium hover:underline flex items-center gap-1"
+                  >
                     Book a Call &rarr;
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
