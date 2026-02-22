@@ -183,7 +183,7 @@ const Pricing: React.FC = () => {
                             <div className="w-full lg:w-auto text-center">
                                 <Button
                                     onClick={handleCalendlyClick}
-                                    className="!bg-white !text-primary hover:!bg-orange-50 font-extrabold px-12 py-5 text-xl shadow-2xl shadow-black/10 transition-transform active:scale-95"
+                                    className="!bg-white !text-primary hover:!bg-orange-50 font-extrabold px-10 py-5 text-lg md:text-xl whitespace-nowrap shadow-2xl shadow-black/10 transition-transform active:scale-95"
                                 >
                                     Secure Your Strategy Call
                                 </Button>
