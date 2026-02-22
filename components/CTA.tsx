@@ -27,16 +27,21 @@ const CTA: React.FC = () => {
           </p>
 
           <div className="flex flex-col items-center gap-6">
-            <Button
-              onClick={handleCalendlyClick}
-              className="text-xl px-12 py-5 shadow-2xl shadow-orange-500/30 transform transition-transform hover:scale-105 active:scale-95 font-black uppercase tracking-tight"
-            >
-              Calculate My Missed Call Revenue
-            </Button>
+            <div className="flex flex-col items-center gap-3">
+              <Button
+                onClick={handleCalendlyClick}
+                className="text-xl px-12 py-5 shadow-2xl shadow-orange-500/30 transform transition-transform hover:scale-105 active:scale-95 font-black uppercase tracking-tight"
+              >
+                Get My Missed Call Revenue Review
+              </Button>
+              <p className="text-slate-400 text-xs font-medium tracking-wide">
+                15-minute strategy call. No pressure.
+              </p>
+            </div>
 
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="group flex items-center gap-2 text-slate-400 hover:text-primary transition-colors duration-300 font-bold text-sm uppercase tracking-widest"
+              className="group flex items-center gap-2 text-slate-400 hover:text-primary transition-colors duration-300 font-bold text-sm uppercase tracking-widest mt-4"
             >
               <span className="w-8 h-px bg-slate-200 group-hover:bg-primary transition-colors"></span>
               Or test the live demo above
