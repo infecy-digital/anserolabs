@@ -2,37 +2,46 @@ import React from 'react';
 import Button from './ui/Button';
 
 const CTA: React.FC = () => {
+  const handleCalendlyClick = () => {
+    if ((window as any).Calendly) {
+      (window as any).Calendly.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' });
+    }
+  };
+
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-primary to-orange-600 rounded-[3rem] p-10 md:p-20 text-center text-white shadow-2xl shadow-orange-500/30 relative overflow-hidden">
+    <section className="py-32 bg-white relative overflow-hidden border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto reveal">
+          <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
+            Stop Letting Missed Calls <br />
+            <span className="text-primary italic">Decide Your Revenue.</span>
+          </h2>
 
-          {/* Decor */}
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-black opacity-10 rounded-full blur-3xl"></div>
+          <h3 className="text-xl md:text-2xl font-bold text-slate-700 mb-8 max-w-3xl mx-auto">
+            Every unanswered call is a potential customer choosing your competitor.
+          </h3>
 
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Ready to explore an AI Voice solution for your business?
-            </h2>
-            <p className="text-lg text-orange-100 mb-10 leading-relaxed">
-              If you’re ready to stop missing calls and start capturing every opportunity, schedule a discovery call with us today. It takes 15 minutes to see if we're a fit.
-            </p>
+          <p className="text-lg md:text-xl text-slate-500 mb-12 leading-relaxed max-w-2xl mx-auto">
+            In 15 minutes, we’ll calculate your missed call impact
+            and show you how AI can recover it.
+          </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                onClick={() => (window as any).Calendly.initPopupWidget({ url: 'https://calendly.com/sumit-anserolabs/strategy-call' })}
-                variant="secondary"
-                className="!bg-white !text-primary hover:!bg-orange-50 font-bold px-10 py-4 text-lg"
-              >
-                Schedule Your 15-Min Strategy Call
-              </Button>
-            </div>
+          <div className="flex flex-col items-center gap-6">
+            <Button
+              onClick={handleCalendlyClick}
+              className="text-xl px-12 py-5 shadow-2xl shadow-orange-500/30 transform transition-transform hover:scale-105 active:scale-95 font-black uppercase tracking-tight"
+            >
+              Calculate My Missed Call Revenue
+            </Button>
 
-            <p className="mt-6 text-sm text-orange-200 opacity-80">
-              No pressure. No sales scripts. Just clarity.
-            </p>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="group flex items-center gap-2 text-slate-400 hover:text-primary transition-colors duration-300 font-bold text-sm uppercase tracking-widest"
+            >
+              <span className="w-8 h-px bg-slate-200 group-hover:bg-primary transition-colors"></span>
+              Or test the live demo above
+              <span className="w-8 h-px bg-slate-200 group-hover:bg-primary transition-colors"></span>
+            </button>
           </div>
         </div>
       </div>
